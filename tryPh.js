@@ -9,7 +9,7 @@
 		}
 		
 		this.restitution = (options && options.restitution)?options.restitution:0.4;
-		this.friction = (options && options.friction)?options.friction:0.5;
+		this.friction = (options && options.friction)?options.friction:0.8;
 
 		this.width = (options && options.width)?options.width:20;
 		this.height = (options && options.height)?options.height:20;
@@ -76,7 +76,7 @@
 	};
 
 	var resolveCollision = function(collider, collidee) {
-		debugger;
+		//debugger;
 		var stickyThreshold = 1; //.0004;
 
 		var rMidX = collider.getMidX();
@@ -88,7 +88,7 @@
 		var dy = (eMidY - rMidY) / collidee.halfHeight;
 
 		var absDX = Math.abs(dx);
-		var absDY = Math.abs(dy);	
+		var absDY = Math.abs(dy);
 		
 		//debugger;
 
@@ -107,17 +107,41 @@
 			};
 
 			if (Math.random() < .5) {
-				collider.vx = -collider.vx * collidee.restitution;
+
+				if(collidee.type != 'fixed'){
+					collider.vx = (((collider.mass*collider.vx) + (collidee.mass*collidee.vx) + (collidee.mass*collidee.restitution)*(collidee.vx - collider.vx))/(collider.mass+collidee.mass));
+					collidee.vx = (((collidee.mass*collidee.vx) + (collider.mass*collider.vx) + (collider.mass*collider.restitution)*(collider.vx - collidee.vx))/(collidee.mass+collider.mass));
+				}
+				else {
+					collider.vx = -collider.vx * collidee.restitution;
+				};
+
 				if (Math.abs(collider.vx) < stickyThreshold) {
 					collider.vx = 0;
 					collider.ax = 0;
 				};
+				if (Math.abs(collidee.vx) < stickyThreshold) {
+					collidee.vx = 0;
+					collidee.ax = 0;
+				};
 			} else {
-				collider.vy = -collider.vy * collidee.restitution;
+				
+				if(collidee.type != 'fixed'){
+					collider.vy = (((collider.mass*collider.vy) + (collidee.mass*collidee.vy) + (collidee.mass*collidee.restitution)*(collidee.vy - collider.vy))/(collider.mass+collidee.mass));
+					collidee.vy = (((collidee.mass*collidee.vy) + (collider.mass*collider.vy) + (collider.mass*collider.restitution)*(collider.vy - collidee.vy))/(collidee.mass+collider.mass));
+				} else{
+					collider.vy = -collider.vy * collidee.restitution;
+				}
+
 				if (Math.abs(collider.vy) < stickyThreshold) {
 					collider.vy = 0;
 					collider.ay = 0;
 				};
+				if (Math.abs(collidee.vy) < stickyThreshold) {
+					collidee.vy = 0;
+					collidee.ay = 0;
+				}
+
 			};	
 		} else if (absDX > absDY) {
 			if (dx < 0) {
@@ -126,11 +150,20 @@
 				collider.x = collidee.getLeft() - collider.width;
 			};
 			
-			collider.vx = -collider.vx * collidee.restitution;
-
+			
+			if(collidee.type != 'fixed'){
+				collider.vx = (((collider.mass*collider.vx) + (collidee.mass*collidee.vx) + (collidee.mass*collidee.restitution)*(collidee.vx - collider.vx))/(collider.mass+collidee.mass));
+				collidee.vx = (((collidee.mass*collidee.vx) + (collider.mass*collider.vx) + (collider.mass*collider.restitution)*(collider.vx - collidee.vx))/(collidee.mass+collider.mass));
+			} else{
+				collider.vx = -collider.vx * collidee.restitution;
+			}
 			if (Math.abs(collider.vx) < stickyThreshold) {
 				collider.vx = 0;
 				collider.ax = 0;
+			};
+			if (Math.abs(collidee.vx) < stickyThreshold) {
+				collidee.vx = 0;
+				collidee.ax = 0;
 			};
 
 		} else {
@@ -142,14 +175,25 @@
 				collider.y = collidee.getTop() - collider.height;
 			};
 			
-			collider.vy = -collider.vy * collidee.restitution;
+			if(collidee.type != 'fixed'){
+				collider.vy = (((collider.mass*collider.vy) + (collidee.mass*collidee.vy) + (collidee.mass*collidee.restitution)*(collidee.vy - collider.vy))/(collider.mass+collidee.mass));
+				collidee.vy = (((collidee.mass*collidee.vy) + (collider.mass*collider.vy) + (collider.mass*collider.restitution)*(collider.vy - collidee.vy))/(collidee.mass+collider.mass));
+			} else{
+				collider.vy = -collider.vy * collidee.restitution;
+			}
+
 			if (Math.abs(collider.vy) < stickyThreshold) {
 				collider.vy = 0;
 				collider.ay = 0;
 			};
+			if (Math.abs(collidee.vx) < stickyThreshold) {
+				collidee.vx = 0;
+				collidee.ax = 0;
+			};
 		};
 
 		if(collider.vx ? !collider.vy :collider.vy){ 				//foo ? !bar : bar XOR
+			//debugger;
 			(Math.abs(collider.vx)>0)?(collider.vx = collider.vx * (1 - collider.friction * collidee.friction)):(collider.vx=0);
 			(Math.abs(collider.vy)>0)?(collider.vy = collider.vy * (1 - collider.friction * collidee.friction)):(collider.vy=0);
 		}
@@ -185,7 +229,7 @@
 						};
 					};
 				};
-				//console.log(entity.x, entity.y, entity.vx, entity.vy ,entity.type);
+				console.log(entity.x, entity.y, entity.vx, entity.vy ,entity.type);
 			};
 		};
 
