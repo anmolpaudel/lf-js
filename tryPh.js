@@ -76,7 +76,7 @@
 	};
 
 	var resolveCollision = function(collider, collidee) {
-		
+		debugger;
 		var stickyThreshold = 1; //.0004;
 
 		var rMidX = collider.getMidX();
@@ -185,7 +185,7 @@
 						};
 					};
 				};
-				console.log(entity.x, entity.y, entity.vx, entity.vy ,entity.type);
+				//console.log(entity.x, entity.y, entity.vx, entity.vy ,entity.type);
 			};
 		};
 

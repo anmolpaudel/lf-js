@@ -9,9 +9,11 @@
 <script type="text/javascript" src="tryPh.js"></script>
 <script>
 
+;(function() {
+	'use strict';
+
 	var PhyElement = function(){
 		var that = this;
-		//that.this.phyEnt = null, this.phyEntDiv = null;
 		
 		this.createPhyElement = function(options){
 			that.phyEnt = new PhysicsEntity(options);
@@ -40,6 +42,18 @@
 	var bar = new PhyElement();
 	bar.createPhyElement({height:50, width:4000, restitution:0.8, x:0, y:800, type:'fixed'});
 
+	var obj1 = new PhyElement();
+	obj1.createPhyElement({height:50, width:50, x:1700, y:600});
+	obj1.phyEntDiv.style.background = 'green';
+
+
+	var obj2 = new PhyElement();
+	obj2.createPhyElement({height:50, width:50, x:1400, y:600});
+	obj2.phyEntDiv.style.background = 'yellow';
+	obj2.phyEnt.vx = 100;
+
+
+/*
 	var objects = [];
 
 	for(var i=0; i<20; i++){
@@ -67,29 +81,7 @@
 
 		objects.push(object);
 	}
-		
-	
-	//engine.step(1);
-	//requestAnimationFrame(function(){engine.step(1);});
-
-	
-	/*var barDiv = document.createElement('div');
-	document.body.appendChild(barDiv);
-	barDiv.style.position = 'absolute';
-	barDiv.style.top = '800px';
-	barDiv.style.left = '0px';
-	barDiv.style.height = '50px';
-	barDiv.style.width = '4000px';
-	barDiv.style.background = 'red';
-
-	var objectDiv = document.createElement('div');
-	document.body.appendChild(objectDiv);
-	objectDiv.style.position = 'absolute';
-	objectDiv.style.top = '80px';
-	objectDiv.style.left = '1500px';
-	objectDiv.style.height = '30px';
-	objectDiv.style.width = '30px';
-	objectDiv.style.background = 'green';*/
+*/		
 
 
 	(function animloop(){
@@ -98,22 +90,20 @@
 		engine.step(0.2);
 
 		bar.render();
+		obj1.render();
+		obj2.render();
 
 
-		for(var i=0; i<20; i++){
+
+
+		/*for(var i=0; i<20; i++){
 			objects[i].render();
-		}
+		}*/
 
-		/*objectDiv.style.top = object.y+'px';
-		objectDiv.style.left = object.x+'px';
-
-		barDiv.style.top = bar.y+'px';
-		barDiv.style.left = bar.x+'px';*/
-
-	  //render();
+		
 	})();
 
-
+})();
 </script>
 
 </body>
