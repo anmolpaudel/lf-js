@@ -1,0 +1,46 @@
+// call requestAnimFrame with a parameter of the
+// game loop function to call
+
+//window.requestAnimationFrame(callback);
+
+/*var start = null;
+var element = document.getElementById("SomeElementYouWantToAnimate");
+
+function step(timestamp) {
+  if (!start) start = timestamp;
+  var progress = timestamp - start;
+  element.style.left = Math.min(progress/10, 200) + "px";
+  if (progress < 2000) {
+	window.requestAnimationFrame(step);
+  }
+}
+
+window.requestAnimationFrame(step);*/
+
+var requestId = window.requestAnimFrame(loopStep);
+window.cancelAnimationFrame(requestId);
+
+/*var mass = 1;
+var force = mass * acceleration;*/
+
+
+// shim layer with setTimeout fallback
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
+
+// usage:
+// instead of setInterval(render, 16) ....
+
+(function animloop(){
+  requestAnimFrame(animloop);
+  render();
+})();
+// place the rAF *before* the render() to assure as close to
+// 60fps with the setTimeout fallback.

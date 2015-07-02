@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Game Try</title>
+<style> </style>
+</head>
+<body>
+
+<script type="text/javascript" src="tryPh.js"></script>
+<script>
+
+	var PhyElement = function(){
+		var that = this;
+		//that.this.phyEnt = null, this.phyEntDiv = null;
+		
+		this.createPhyElement = function(options){
+			that.phyEnt = new PhysicsEntity(options);
+			that.phyEntDiv = document.createElement('div');
+			that.phyEntDiv.style.position = 'absolute';
+			that.phyEntDiv.style.top = that.phyEnt.y + 'px';
+			that.phyEntDiv.style.left = that.phyEnt.x + 'px';
+			that.phyEntDiv.style.height = that.phyEnt.height + 'px';
+			that.phyEntDiv.style.width = that.phyEnt.width + 'px';
+			that.phyEntDiv.style.background = 'red';
+
+			engine.addEntity(that.phyEnt);
+			document.body.appendChild(that.phyEntDiv);
+
+		};
+
+		this.render = function (){
+			that.phyEntDiv.style.top = that.phyEnt.y + 'px';
+			that.phyEntDiv.style.left = that.phyEnt.x + 'px';
+		};
+	};
+
+
+	var engine = new Engine();
+
+	var bar = new PhyElement();
+	bar.createPhyElement({height:50, width:4000, restitution:0.8, x:0, y:800, type:'fixed'});
+
+	var objects = [];
+
+	for(var i=0; i<20; i++){
+		var object = new PhyElement();
+		var random = Math.random();
+		object.createPhyElement({
+			height: random * 50 + 20,
+			width:random * 50 + 20,
+			restitution:1.0,
+			x: random * Math.random() * 1500 + 1000,
+			y: random * Math.random() * 80,
+			type:'moving'
+		});
+		object.phyEnt.vx = Math.random() * 10 + 5;
+		object.phyEntDiv.style.background = 'blue';
+
+		if(Math.random()>0.5) object.phyEnt.vx = Math.random() * -7;
+		if(Math.random()>0.5) object.phyEntDiv.style.borderRadius = '100%';
+
+		if(Math.random()>0.3) object.phyEntDiv.style.background = 'green';
+		if(Math.random()>0.6) object.phyEntDiv.style.background = 'yellow';
+		if(Math.random()>0.8) object.phyEntDiv.style.background = 'orange';
+
+
+
+		objects.push(object);
+	}
+		
+	
+	//engine.step(1);
+	//requestAnimationFrame(function(){engine.step(1);});
+
+	
+	/*var barDiv = document.createElement('div');
+	document.body.appendChild(barDiv);
+	barDiv.style.position = 'absolute';
+	barDiv.style.top = '800px';
+	barDiv.style.left = '0px';
+	barDiv.style.height = '50px';
+	barDiv.style.width = '4000px';
+	barDiv.style.background = 'red';
+
+	var objectDiv = document.createElement('div');
+	document.body.appendChild(objectDiv);
+	objectDiv.style.position = 'absolute';
+	objectDiv.style.top = '80px';
+	objectDiv.style.left = '1500px';
+	objectDiv.style.height = '30px';
+	objectDiv.style.width = '30px';
+	objectDiv.style.background = 'green';*/
+
+
+	(function animloop(){
+
+		requestAnimationFrame(animloop);
+		engine.step(0.2);
+
+		bar.render();
+
+
+		for(var i=0; i<20; i++){
+			objects[i].render();
+		}
+
+		/*objectDiv.style.top = object.y+'px';
+		objectDiv.style.left = object.x+'px';
+
+		barDiv.style.top = bar.y+'px';
+		barDiv.style.left = bar.x+'px';*/
+
+	  //render();
+	})();
+
+
+</script>
+
+</body>
+</html>
