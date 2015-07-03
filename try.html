@@ -2,7 +2,13 @@
 <html>
 <head>
 <title>Game Try</title>
-<style> </style>
+<style> 
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+</style>
 </head>
 <body>
 
@@ -42,36 +48,38 @@
 	var bar = new PhyElement();
 	bar.createPhyElement({height:50, width:4000, restitution:0.8, x:0, y:800, type:'fixed'});
 
-	var obj1 = new PhyElement();
+	/*var obj1 = new PhyElement();
 	obj1.createPhyElement({height:50, width:50, x:1700, y:600});
 	obj1.phyEntDiv.style.background = 'green';
+	obj1.phyEnt.vx = -50;
+	obj1.phyEnt.mass = 2;
 
 
 	var obj2 = new PhyElement();
 	obj2.createPhyElement({height:50, width:50, x:1400, y:600});
 	obj2.phyEntDiv.style.background = 'yellow';
-	obj2.phyEnt.vx = 100;
+	obj2.phyEnt.vx = 50;
+	obj2.phyEnt.mass = 2;*/
 
 
-/*
 	var objects = [];
 
-	for(var i=0; i<20; i++){
+	for(var i=0; i<10; i++){
 		var object = new PhyElement();
 		var random = Math.random();
 		object.createPhyElement({
-			height: random * 50 + 20,
-			width:random * 50 + 20,
-			restitution:1.0,
+			height: random * 200 + 50,
+			width:random * 200 + 50,
+			//restitution:1.0,
 			x: random * Math.random() * 1500 + 1000,
 			y: random * Math.random() * 80,
 			type:'moving'
 		});
-		object.phyEnt.vx = Math.random() * 10 + 5;
+		object.phyEnt.vx = Math.random() * 15 + 5;
 		object.phyEntDiv.style.background = 'blue';
 
-		if(Math.random()>0.5) object.phyEnt.vx = Math.random() * -7;
-		if(Math.random()>0.5) object.phyEntDiv.style.borderRadius = '100%';
+		if(Math.random()>0.5) object.phyEnt.vx = Math.random() * -15;
+		//if(Math.random()>0.5) object.phyEntDiv.style.borderRadius = '100%';
 
 		if(Math.random()>0.3) object.phyEntDiv.style.background = 'green';
 		if(Math.random()>0.6) object.phyEntDiv.style.background = 'yellow';
@@ -81,7 +89,6 @@
 
 		objects.push(object);
 	}
-*/		
 
 
 	(function animloop(){
@@ -90,17 +97,13 @@
 		engine.step(0.2);
 
 		bar.render();
-		obj1.render();
-		obj2.render();
+		/*obj1.render();
+		obj2.render();*/
 
-
-
-
-		/*for(var i=0; i<20; i++){
+		for(var i=0; i<objects.length; i++){
 			objects[i].render();
-		}*/
+		}
 
-		
 	})();
 
 })();
